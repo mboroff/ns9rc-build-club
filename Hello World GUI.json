@@ -1,0 +1,99 @@
+[
+    {
+        "id": "fd422e18a689d2a2",
+        "type": "tab",
+        "label": "Hello World",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "51df21632ba81856",
+        "type": "ui_text",
+        "z": "fd422e18a689d2a2",
+        "group": "2d5047fb0c31b32e",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "Hello World",
+        "label": "         ",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "x": 530,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "2d604c5068daf644",
+        "type": "ui_button",
+        "z": "fd422e18a689d2a2",
+        "name": "Hello World Button",
+        "group": "2d5047fb0c31b32e",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Click On Me",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "This is what happens when I click on this button.",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 210,
+        "y": 240,
+        "wires": [
+            [
+                "51df21632ba81856"
+            ]
+        ]
+    },
+    {
+        "id": "0987b8501c66ba47",
+        "type": "inject",
+        "z": "fd422e18a689d2a2",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "str",
+        "x": 190,
+        "y": 340,
+        "wires": [
+            [
+                "51df21632ba81856"
+            ]
+        ]
+    },
+    {
+        "id": "2d5047fb0c31b32e",
+        "type": "ui_group",
+        "name": "Lab Group",
+        "tab": "10a25f79fb053ddc",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "10a25f79fb053ddc",
+        "type": "ui_tab",
+        "name": "Hello World",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]

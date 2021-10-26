@@ -1,0 +1,220 @@
+[
+    {
+        "id": "667e30d206560707",
+        "type": "tab",
+        "label": "Weather Display",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4b276356bb8e3001",
+        "type": "openweathermap in",
+        "z": "667e30d206560707",
+        "name": "Open Weather Map",
+        "wtype": "current",
+        "lon": "",
+        "lat": "",
+        "city": "Mundelein",
+        "country": "US",
+        "language": "en",
+        "x": 170,
+        "y": 340,
+        "wires": [
+            [
+                "44e36638e6abaa16",
+                "ac90b4fdb030543b",
+                "84a9c9ccf8c7f3cb",
+                "834f05351b229523"
+            ]
+        ]
+    },
+    {
+        "id": "09746b9cbdc9e4eb",
+        "type": "ui_text",
+        "z": "667e30d206560707",
+        "group": "b24869a1f2fb9d2d",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "Temperature",
+        "label": "Temperature",
+        "format": "{{msg.payload}} F&deg",
+        "layout": "col-center",
+        "x": 850,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "dd81c58df3d270b7",
+        "type": "ui_text",
+        "z": "667e30d206560707",
+        "group": "b24869a1f2fb9d2d",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Humidity",
+        "format": "{{msg.payload}} %",
+        "layout": "col-center",
+        "x": 700,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "e97046d39b54824a",
+        "type": "ui_text",
+        "z": "667e30d206560707",
+        "group": "b24869a1f2fb9d2d",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Windspeed",
+        "format": "{{msg.payload}} ",
+        "layout": "col-center",
+        "x": 770,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "44e36638e6abaa16",
+        "type": "function",
+        "z": "667e30d206560707",
+        "name": "Temperature Filter",
+        "func": "var tempf = msg.payload.tempc\n\ntempf = Math.round(((tempf * 9)/5) + 32)\n    msg.payload = tempf\n    return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 300,
+        "wires": [
+            [
+                "09746b9cbdc9e4eb"
+            ]
+        ]
+    },
+    {
+        "id": "ac90b4fdb030543b",
+        "type": "function",
+        "z": "667e30d206560707",
+        "name": "Humity Filter",
+        "func": "var humidity = msg.payload.humidity\n\n    msg.payload = humidity\n    return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 400,
+        "wires": [
+            [
+                "dd81c58df3d270b7"
+            ]
+        ]
+    },
+    {
+        "id": "84a9c9ccf8c7f3cb",
+        "type": "function",
+        "z": "667e30d206560707",
+        "name": "Windspeed Filter",
+        "func": "var wind = msg.payload.windspeed; \nvar direction = msg.payload.winddirection;\nvar compassHeading = \"n\";\nif (direction == 0) {\n    compassHeading = \"North\";\n}\nif (direction == 90) {\n    compassHeading = \"East\";\n}\nif (direction == 180) {\n    compassHeading = \"South\";\n}\nif (direction == 270) {\n    compassHeading = \"West\";\n}\nmsg.payload = wind + \" mph \" + compassHeading \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 500,
+        "wires": [
+            [
+                "e97046d39b54824a"
+            ]
+        ]
+    },
+    {
+        "id": "d8355630f041c34f",
+        "type": "comment",
+        "z": "667e30d206560707",
+        "name": "",
+        "info": "Enter your API Key city and country in the Open Weather Map node.",
+        "x": 150,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "834f05351b229523",
+        "type": "function",
+        "z": "667e30d206560707",
+        "name": "Current Conditions",
+        "func": "var description = msg.payload.description\n\n    msg.payload = description\n    return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 220,
+        "wires": [
+            [
+                "a8ddc5970e8bbb91"
+            ]
+        ]
+    },
+    {
+        "id": "a8ddc5970e8bbb91",
+        "type": "ui_text",
+        "z": "667e30d206560707",
+        "group": "b24869a1f2fb9d2d",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Current Conditions",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 850,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "7b0aeea97fb196f8",
+        "type": "ui_template",
+        "z": "667e30d206560707",
+        "group": "b24869a1f2fb9d2d",
+        "name": "Tool Bar Template",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "format": "<script id=\"titleScript\" type=\"text/javascript\">\n\n$(function() {\n    if($('.md-toolbar-tools').length != 0){\n        loadClock();\n    }else setTimeout(loadClock, 500)\n});\n\nfunction loadClock(){\n    $('#clock').remove();\n    var toolbar = $('.md-toolbar-tools');\n    \n    var div = $('<div/>');\n    var p = $('<p/ id=\"clock\">');\n    \n    div.append(p);\n    div[0].style.margin = '5px 5px 5px auto';\n    toolbar.append(div);\n\n    function displayTitle(lh) {\n        p.text(lh); \n    }\n    \n    function upTime() {\n        var d = new Date();\n        p.text(d.toLocaleString());\n    }\n\n    if(document.clockInterval){ \n            clearInterval(document.clockInterval);\n            document.clockInterval = null;\n    }\n        \n    document.clockInterval = setInterval(upTime,1000);\n}\n\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 300,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b24869a1f2fb9d2d",
+        "type": "ui_group",
+        "name": "Conditions",
+        "tab": "0c07981f28f1870d",
+        "order": 2,
+        "disp": true,
+        "width": "14",
+        "collapse": false
+    },
+    {
+        "id": "0c07981f28f1870d",
+        "type": "ui_tab",
+        "name": "Weather",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]

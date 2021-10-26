@@ -1,0 +1,235 @@
+[
+    {
+        "id": "71ff4a75.bb2bac",
+        "type": "tab",
+        "label": "Temperature Probe",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "6a7688e5.2ebb68",
+        "type": "ui_gauge",
+        "z": "71ff4a75.bb2bac",
+        "name": "",
+        "group": "180ed038a1821649",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "Degrees",
+        "format": "{{value | number:1}} C",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 690,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "ae65c179.7c21e8",
+        "type": "function",
+        "z": "71ff4a75.bb2bac",
+        "name": "Convert temp to F",
+        "func": "str = msg.payload\nmsg.payload = (str * 9)/5 +32\nmsg.topic = \"Temp in house\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 470,
+        "y": 380,
+        "wires": [
+            [
+                "6d4198f1.1233a8",
+                "3d48d7e5.512de",
+                "e7cb8497.c8d34"
+            ]
+        ]
+    },
+    {
+        "id": "6d4198f1.1233a8",
+        "type": "ui_gauge",
+        "z": "71ff4a75.bb2bac",
+        "name": "",
+        "group": "53088748ab2eceab",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "Degrees",
+        "format": "{{value | number:1}} F",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 690,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "3d48d7e5.512de",
+        "type": "ui_chart",
+        "z": "71ff4a75.bb2bac",
+        "name": "",
+        "group": "7262e183.f5339",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 690,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e7cb8497.c8d34",
+        "type": "ui_chart",
+        "z": "71ff4a75.bb2bac",
+        "name": "",
+        "group": "7262e183.f5339",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "bar",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "60",
+        "ymax": "80",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "x": 690,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9746b713.b78c6",
+        "type": "inject",
+        "z": "71ff4a75.bb2bac",
+        "name": "",
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 200,
+        "wires": [
+            [
+                "0ff469a67fbcd9ed"
+            ]
+        ]
+    },
+    {
+        "id": "0ff469a67fbcd9ed",
+        "type": "rpi-ds18b20",
+        "z": "71ff4a75.bb2bac",
+        "topic": "",
+        "array": false,
+        "name": "",
+        "x": 380,
+        "y": 160,
+        "wires": [
+            [
+                "6a7688e5.2ebb68",
+                "ae65c179.7c21e8"
+            ]
+        ]
+    },
+    {
+        "id": "180ed038a1821649",
+        "type": "ui_group",
+        "name": "",
+        "tab": "ed90deeb.cdfa08",
+        "order": 3,
+        "disp": false,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "53088748ab2eceab",
+        "type": "ui_group",
+        "name": "",
+        "tab": "ed90deeb.cdfa08",
+        "order": 2,
+        "disp": false,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "7262e183.f5339",
+        "type": "ui_group",
+        "name": "Family Room",
+        "tab": "ed90deeb.cdfa08",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "ed90deeb.cdfa08",
+        "type": "ui_tab",
+        "name": "Home Temperatures",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

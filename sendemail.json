@@ -1,0 +1,87 @@
+[
+    {
+        "id": "30f15059d1318e08",
+        "type": "tab",
+        "label": "Send Text or Email",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "e48fe0f2c090281e",
+        "type": "e-mail",
+        "z": "30f15059d1318e08",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "secure": true,
+        "tls": true,
+        "name": "aaaeeennnn@txt.att.net",
+        "dname": "Send Text",
+        "x": 840,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "cadfd095ee8bedb1",
+        "type": "function",
+        "z": "30f15059d1318e08",
+        "name": "Send the date as a text message",
+        "func": "msg.payload = new Date();\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 160,
+        "wires": [
+            [
+                "e48fe0f2c090281e"
+            ]
+        ]
+    },
+    {
+        "id": "0a685ed0b7ec7bcd",
+        "type": "ui_button",
+        "z": "30f15059d1318e08",
+        "name": "",
+        "group": "1ae8263166c105f5",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Click here to send a text msg",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "test",
+        "payloadType": "str",
+        "topic": "Lab Message",
+        "topicType": "str",
+        "x": 280,
+        "y": 160,
+        "wires": [
+            [
+                "cadfd095ee8bedb1"
+            ]
+        ]
+    },
+    {
+        "id": "1ae8263166c105f5",
+        "type": "ui_group",
+        "name": "Send Email",
+        "tab": "9ef52498d88a0dda",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "9ef52498d88a0dda",
+        "type": "ui_tab",
+        "name": "Send Email",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

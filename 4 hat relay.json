@@ -1,0 +1,190 @@
+[
+    {
+        "id": "3288b627.bcd0fa",
+        "type": "tab",
+        "label": "keyestudio relays",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "77fa478b.d19ca8",
+        "type": "ui_switch",
+        "z": "3288b627.bcd0fa",
+        "name": "Relay 1",
+        "label": "Relay 1",
+        "tooltip": "",
+        "group": "2497defced9edc69",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "decouple": "false",
+        "topic": "outlet?1=",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "fa-2x fa-power-off",
+        "oncolor": "lightgreen",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "fa-2x fa-power-off",
+        "offcolor": "red",
+        "animate": true,
+        "x": 400,
+        "y": 120,
+        "wires": [
+            [
+                "354a65df.666e0a"
+            ]
+        ]
+    },
+    {
+        "id": "b39ffe90.893fa",
+        "type": "ui_switch",
+        "z": "3288b627.bcd0fa",
+        "name": "Relay 2",
+        "label": "Relay 2",
+        "tooltip": "",
+        "group": "2497defced9edc69",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "decouple": "false",
+        "topic": "outlet?2=",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "fa-2x fa-power-off",
+        "oncolor": "lightgreen",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "fa-2x fa-power-off",
+        "offcolor": "red",
+        "x": 400,
+        "y": 180,
+        "wires": [
+            [
+                "6df5fa50.545654"
+            ]
+        ]
+    },
+    {
+        "id": "54f40121.cec04",
+        "type": "ui_switch",
+        "z": "3288b627.bcd0fa",
+        "name": "Relay 3",
+        "label": "Relay 3",
+        "tooltip": "",
+        "group": "2497defced9edc69",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "decouple": "false",
+        "topic": "outlet?3=",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "fa-2x fa-power-off",
+        "oncolor": "lightgreen",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "fa-2x fa-power-off",
+        "offcolor": "red",
+        "x": 400,
+        "y": 240,
+        "wires": [
+            [
+                "a15583f4.330ac"
+            ]
+        ]
+    },
+    {
+        "id": "38dc3dc0.368712",
+        "type": "ui_switch",
+        "z": "3288b627.bcd0fa",
+        "name": "Relay 4",
+        "label": "Relay 4",
+        "tooltip": "",
+        "group": "2497defced9edc69",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "decouple": "false",
+        "topic": "outlet?4=",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "fa-2x fa-power-off",
+        "oncolor": "lightgreen",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "fa-2x fa-power-off",
+        "offcolor": "red",
+        "x": 400,
+        "y": 300,
+        "wires": [
+            [
+                "5a55a4cc.318b3c"
+            ]
+        ]
+    },
+    {
+        "id": "354a65df.666e0a",
+        "type": "RelayJ2",
+        "z": "3288b627.bcd0fa",
+        "name": "",
+        "x": 600,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "6df5fa50.545654",
+        "type": "RelayJ3",
+        "z": "3288b627.bcd0fa",
+        "name": "",
+        "x": 600,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "a15583f4.330ac",
+        "type": "RelayJ4",
+        "z": "3288b627.bcd0fa",
+        "name": "",
+        "x": 600,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "5a55a4cc.318b3c",
+        "type": "RelayJ5",
+        "z": "3288b627.bcd0fa",
+        "name": "",
+        "x": 600,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "2497defced9edc69",
+        "type": "ui_group",
+        "name": "4 Relay Hat",
+        "tab": "d54d2b5ba78c652f",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "d54d2b5ba78c652f",
+        "type": "ui_tab",
+        "name": "4 Relay Hat",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]

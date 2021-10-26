@@ -1,0 +1,715 @@
+[
+    {
+        "id": "674837cf0f654e3e",
+        "type": "tab",
+        "label": "DX Cluster",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3d1a6734ee5baf56",
+        "type": "inject",
+        "z": "674837cf0f654e3e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload",
+                "v": "",
+                "vt": "date"
+            },
+            {
+                "p": "topic",
+                "v": "",
+                "vt": "string"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "3",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 145,
+        "y": 105,
+        "wires": [
+            [
+                "e02dfa9cc231d009"
+            ]
+        ]
+    },
+    {
+        "id": "b0cf755265332e88",
+        "type": "tcp request",
+        "z": "674837cf0f654e3e",
+        "server": "dx.n8noe.us",
+        "port": "7373",
+        "out": "sit",
+        "splitc": " ",
+        "name": "DX Cluster Connection",
+        "x": 560,
+        "y": 100,
+        "wires": [
+            [
+                "9fc6d9a7fce0674b"
+            ]
+        ]
+    },
+    {
+        "id": "e02dfa9cc231d009",
+        "type": "function",
+        "z": "674837cf0f654e3e",
+        "name": "send login",
+        "func": "msg.payload=\"XXXXXX\\r\\n\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 100,
+        "wires": [
+            [
+                "b0cf755265332e88"
+            ]
+        ]
+    },
+    {
+        "id": "b39e0fa98c2e61f8",
+        "type": "debug",
+        "z": "674837cf0f654e3e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 950,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "9fc6d9a7fce0674b",
+        "type": "function",
+        "z": "674837cf0f654e3e",
+        "name": "UTF8",
+        "func": "msg.payload=msg.payload.toString('UTF8');\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 810,
+        "y": 120,
+        "wires": [
+            [
+                "81dbbf27d3ae1e1a"
+            ]
+        ]
+    },
+    {
+        "id": "81dbbf27d3ae1e1a",
+        "type": "switch",
+        "z": "674837cf0f654e3e",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "regex",
+                "v": "DX de ",
+                "vt": "str",
+                "case": false
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "07291161b9dd6b09",
+                "b1d8e34553eb710c",
+                "cabe6ea2a6bfd625",
+                "afe61bd803a14208",
+                "39d600079ec4c819",
+                "fa4271d1b5e24fdf",
+                "e0cc53e22ec06122",
+                "5b724a24f9ae818b"
+            ]
+        ]
+    },
+    {
+        "id": "6c70d9736fa036b4",
+        "type": "debug",
+        "z": "674837cf0f654e3e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1590,
+        "y": 105,
+        "wires": []
+    },
+    {
+        "id": "5ab848ab18d69f67",
+        "type": "comment",
+        "z": "674837cf0f654e3e",
+        "name": "Comment - Read for Items to Change",
+        "info": "You will need to update with your call information in the \"send login\" node.\n\nYou will need to update the DX cluster information (address and port) in the DX Cluster Connection Node to point at your favorite location.\n\nThis flow is designed for clusters using the AR Cluster software.  \n\nThis was a proof-of-concept for me.  Will add parsing for other types later.",
+        "x": 270,
+        "y": 225,
+        "wires": []
+    },
+    {
+        "id": "07291161b9dd6b09",
+        "type": "function",
+        "z": "674837cf0f654e3e",
+        "name": "17 meters",
+        "func": "let spot = msg.payload\nlet freq = spot.substr(17,8);\nlet call = spot.substr(26,12);\nlet comment = spot.substr(39,30);\nlet time = spot.substr(70,5);\nif (freq > 18000 && freq < 19000) {\nreturn {\"payload\":{\n    \"command\":\"addData\",\n    \"arguments\":[\n        {\n            freq:freq,call:call,comment:comment,time:time\n        },\n        true\n    ],\n    \"returnPromise\":true\n    }\n}\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 600,
+        "wires": [
+            [
+                "4d966d4c3a174790"
+            ]
+        ]
+    },
+    {
+        "id": "4d966d4c3a174790",
+        "type": "ui_table",
+        "z": "674837cf0f654e3e",
+        "group": "8b133c6aeeedd22b",
+        "name": "17 meters",
+        "order": 1,
+        "width": "10",
+        "height": "3",
+        "columns": [
+            {
+                "field": "freq",
+                "title": "Frequency",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "call",
+                "title": "Call",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "comment",
+                "title": "Comment",
+                "width": "250",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 1,
+        "cts": true,
+        "x": 580,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3140979fead52c6e",
+        "type": "ui_table",
+        "z": "674837cf0f654e3e",
+        "group": "9765db105770095b",
+        "name": "40 meters",
+        "order": 3,
+        "width": "10",
+        "height": "3",
+        "columns": [
+            {
+                "field": "freq",
+                "title": "Frequency",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "call",
+                "title": "Call",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "comment",
+                "title": "Coments",
+                "width": "200",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 580,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "b1d8e34553eb710c",
+        "type": "function",
+        "z": "674837cf0f654e3e",
+        "name": "40 meters",
+        "func": "let spot = msg.payload\nlet freq = spot.substr(17,8);\nlet call = spot.substr(26,12);\nlet comment = spot.substr(39,30);\nlet time = spot.substr(70,5);\nif (freq > 7000 && freq < 8000) {\nreturn {\"payload\":{\n    \"command\":\"addData\",\n    \"arguments\":[\n        {\n            freq:freq,call:call,comment:comment,time:time\n        },\n        true\n    ],\n    \"returnPromise\":true\n    }\n}\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 420,
+        "wires": [
+            [
+                "3140979fead52c6e"
+            ]
+        ]
+    },
+    {
+        "id": "cabe6ea2a6bfd625",
+        "type": "function",
+        "z": "674837cf0f654e3e",
+        "name": "20 meters",
+        "func": "let spot = msg.payload\nlet freq = spot.substr(17,8);\nlet call = spot.substr(26,12);\nlet comment = spot.substr(39,30);\nlet time = spot.substr(70,5);\nif (freq > 14000 && freq < 15000) {\nreturn {\"payload\":{\n    \"command\":\"addData\",\n    \"arguments\":[\n        {\n            freq:freq,call:call,comment:comment,time:time\n        },\n        true\n    ],\n    \"returnPromise\":true\n    }\n}\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 540,
+        "wires": [
+            [
+                "b60225d0fa630922"
+            ]
+        ]
+    },
+    {
+        "id": "b60225d0fa630922",
+        "type": "ui_table",
+        "z": "674837cf0f654e3e",
+        "group": "9765db105770095b",
+        "name": "20 meters",
+        "order": 5,
+        "width": "10",
+        "height": "3",
+        "columns": [
+            {
+                "field": "freq",
+                "title": "Frequency",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "call",
+                "title": "Call",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "comment",
+                "title": "Comment",
+                "width": "200",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 580,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "afe61bd803a14208",
+        "type": "function",
+        "z": "674837cf0f654e3e",
+        "name": "160 meters",
+        "func": "let spot = msg.payload\nlet freq = spot.substr(17,8);\nlet call = spot.substr(26,12);\nlet comment = spot.substr(39,30);\nlet time = spot.substr(70,5);\nif (freq > 1 && freq < 2000) {\nreturn {\"payload\":{\n    \"command\":\"addData\",\n    \"arguments\":[\n        {\n            freq:freq,call:call,comment:comment,time:time\n        },\n        true\n    ],\n    \"returnPromise\":true\n    }\n}\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 370,
+        "y": 300,
+        "wires": [
+            [
+                "e105f31f6e7d17c5"
+            ]
+        ]
+    },
+    {
+        "id": "e105f31f6e7d17c5",
+        "type": "ui_table",
+        "z": "674837cf0f654e3e",
+        "group": "9765db105770095b",
+        "name": "160 meters",
+        "order": 1,
+        "width": "10",
+        "height": "3",
+        "columns": [
+            {
+                "field": "freq",
+                "title": "Frequency",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "call",
+                "title": "Call",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "comment",
+                "title": "Comment",
+                "width": "200",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 590,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "39d600079ec4c819",
+        "type": "function",
+        "z": "674837cf0f654e3e",
+        "name": "80 meters",
+        "func": "let spot = msg.payload\nlet freq = spot.substr(17,8);\nlet call = spot.substr(26,12);\nlet comment = spot.substr(39,30);\nlet time = spot.substr(70,5);\nif (freq > 3500 && freq < 4000) {\nreturn {\"payload\":{\n    \"command\":\"addData\",\n    \"arguments\":[\n        {\n            freq:freq,call:call,comment:comment,time:time\n        },\n        true\n    ],\n    \"returnPromise\":true\n    }\n}\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 360,
+        "wires": [
+            [
+                "c3059a0e8a234063"
+            ]
+        ]
+    },
+    {
+        "id": "c3059a0e8a234063",
+        "type": "ui_table",
+        "z": "674837cf0f654e3e",
+        "group": "9765db105770095b",
+        "name": "80 meters",
+        "order": 2,
+        "width": "10",
+        "height": "3",
+        "columns": [
+            {
+                "field": "freq",
+                "title": "Frequency",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "call",
+                "title": "Call",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "comment",
+                "title": "Comment",
+                "width": "200",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 580,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "fa4271d1b5e24fdf",
+        "type": "function",
+        "z": "674837cf0f654e3e",
+        "name": "30 meters",
+        "func": "let spot = msg.payload\nlet freq = spot.substr(17,8);\nlet call = spot.substr(26,12);\nlet comment = spot.substr(39,30);\nlet time = spot.substr(70,5);\nif (freq > 10000 && freq < 11000) {\nreturn {\"payload\":{\n    \"command\":\"addData\",\n    \"arguments\":[\n        {\n            freq:freq,call:call,comment:comment,time:time\n        },\n        true\n    ],\n    \"returnPromise\":true\n    }\n}\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 480,
+        "wires": [
+            [
+                "a0b4bd90ca7444ce"
+            ]
+        ]
+    },
+    {
+        "id": "a0b4bd90ca7444ce",
+        "type": "ui_table",
+        "z": "674837cf0f654e3e",
+        "group": "9765db105770095b",
+        "name": "30 meters",
+        "order": 4,
+        "width": "10",
+        "height": "3",
+        "columns": [
+            {
+                "field": "freq",
+                "title": "Frequency",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "call",
+                "title": "Call",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "comment",
+                "title": "Comment",
+                "width": "200",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 580,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "e0cc53e22ec06122",
+        "type": "function",
+        "z": "674837cf0f654e3e",
+        "name": "15 meters",
+        "func": "let spot = msg.payload\nlet freq = spot.substr(17,8);\nlet call = spot.substr(26,12);\nlet comment = spot.substr(39,30);\nlet time = spot.substr(70,5);\nif (freq > 21000 && freq < 23000) {\nreturn {\"payload\":{\n    \"command\":\"addData\",\n    \"arguments\":[\n        {\n            freq:freq,call:call,comment:comment,time:time\n        },\n        true\n    ],\n    \"returnPromise\":true\n    }\n}\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 660,
+        "wires": [
+            [
+                "9cea0682d5b341c5"
+            ]
+        ]
+    },
+    {
+        "id": "9cea0682d5b341c5",
+        "type": "ui_table",
+        "z": "674837cf0f654e3e",
+        "group": "8b133c6aeeedd22b",
+        "name": "15 meters",
+        "order": 2,
+        "width": "10",
+        "height": "3",
+        "columns": [
+            {
+                "field": "freq",
+                "title": "Frequency",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "call",
+                "title": "Call",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "comment",
+                "title": "Comment",
+                "width": "200",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 580,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "5b724a24f9ae818b",
+        "type": "function",
+        "z": "674837cf0f654e3e",
+        "name": "10 meters",
+        "func": "let spot = msg.payload\nlet freq = spot.substr(17,8);\nlet call = spot.substr(26,12);\nlet comment = spot.substr(39,30);\nlet time = spot.substr(70,5);\nif (freq > 28000 && freq < 30000) {\nreturn {\"payload\":{\n    \"command\":\"addData\",\n    \"arguments\":[\n        {\n            freq:freq,call:call,comment:comment,time:time\n        },\n        true\n    ],\n    \"returnPromise\":true\n    }\n}\n};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 720,
+        "wires": [
+            [
+                "d9f1b251d512c151"
+            ]
+        ]
+    },
+    {
+        "id": "d9f1b251d512c151",
+        "type": "ui_table",
+        "z": "674837cf0f654e3e",
+        "group": "8b133c6aeeedd22b",
+        "name": "10 meters",
+        "order": 3,
+        "width": "10",
+        "height": "3",
+        "columns": [
+            {
+                "field": "freq",
+                "title": "Frequency",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "call",
+                "title": "Call",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "comment",
+                "title": "Comment",
+                "width": "200",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 580,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "8b133c6aeeedd22b",
+        "type": "ui_group",
+        "name": "Group 2",
+        "tab": "3333836094d173ed",
+        "order": 2,
+        "disp": true,
+        "width": "10",
+        "collapse": false
+    },
+    {
+        "id": "9765db105770095b",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "3333836094d173ed",
+        "order": 1,
+        "disp": true,
+        "width": "10",
+        "collapse": false
+    },
+    {
+        "id": "3333836094d173ed",
+        "type": "ui_tab",
+        "name": "DX Cluster",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

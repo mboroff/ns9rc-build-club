@@ -1,0 +1,123 @@
+[
+    {
+        "id": "a3e11094.3a743",
+        "type": "tab",
+        "label": "Blink",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4f397cd3.2362dc",
+        "type": "function",
+        "z": "a3e11094.3a743",
+        "name": "startBlink",
+        "func": "msg.payload = 1;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 380,
+        "y": 220,
+        "wires": [
+            [
+                "947508eb.b2b79",
+                "e66aeded.6cf3d8"
+            ]
+        ]
+    },
+    {
+        "id": "ac05515f.3588",
+        "type": "inject",
+        "z": "a3e11094.3a743",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 220,
+        "wires": [
+            [
+                "4f397cd3.2362dc"
+            ]
+        ]
+    },
+    {
+        "id": "c2072b4a.2f6268",
+        "type": "function",
+        "z": "a3e11094.3a743",
+        "name": "Stop Blink",
+        "func": "msg.payload = 0;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 530,
+        "y": 340,
+        "wires": [
+            [
+                "947508eb.b2b79",
+                "b802e97d.a498d8"
+            ]
+        ]
+    },
+    {
+        "id": "e66aeded.6cf3d8",
+        "type": "delay",
+        "z": "a3e11094.3a743",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 360,
+        "y": 360,
+        "wires": [
+            [
+                "c2072b4a.2f6268"
+            ]
+        ]
+    },
+    {
+        "id": "b802e97d.a498d8",
+        "type": "delay",
+        "z": "a3e11094.3a743",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 720,
+        "y": 360,
+        "wires": [
+            [
+                "4f397cd3.2362dc"
+            ]
+        ]
+    },
+    {
+        "id": "947508eb.b2b79",
+        "type": "rpi-gpio out",
+        "z": "a3e11094.3a743",
+        "name": "",
+        "pin": "11",
+        "set": "",
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 680,
+        "y": 220,
+        "wires": []
+    }
+]

@@ -1,0 +1,988 @@
+[
+    {
+        "id": "d0d8439c.38a48",
+        "type": "tab",
+        "label": "RPi Flow",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3bbedb5d.5c02ec",
+        "type": "ui_gauge",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "group": "2e3fdd87.1fbdea",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "CPU Temperature",
+        "label": "C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 770,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "d7888e02.6b1a8",
+        "type": "exec",
+        "z": "d0d8439c.38a48",
+        "command": "vcgencmd measure_temp",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "RPi Temp.",
+        "x": 310,
+        "y": 160,
+        "wires": [
+            [
+                "4937c91e.db6e3"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "1ebced3e.ec0edb",
+        "type": "inject",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "repeat": "10",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 90,
+        "y": 160,
+        "wires": [
+            [
+                "d7888e02.6b1a8",
+                "23d2c1da.f6a506"
+            ]
+        ]
+    },
+    {
+        "id": "4937c91e.db6e3",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "calc cpu temp",
+        "func": "str = msg.payload\nmsg.payload = str.substring(5,9);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 160,
+        "wires": [
+            [
+                "3bbedb5d.5c02ec",
+                "2c52889d.72da2"
+            ]
+        ]
+    },
+    {
+        "id": "d76e88d2.1bd558",
+        "type": "ui_button",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "group": "27a759a9.e62866",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Reboot",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "Flex Pi Mundelein Re-booted",
+        "payloadType": "str",
+        "topic": "",
+        "x": 80,
+        "y": 540,
+        "wires": [
+            [
+                "9fb4efd2.01f128"
+            ]
+        ]
+    },
+    {
+        "id": "3c90b257.e8ded6",
+        "type": "exec",
+        "z": "d0d8439c.38a48",
+        "command": "sudo reboot",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "Reboot",
+        "x": 1420,
+        "y": 1240,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "7d3a306f.6b4488",
+        "type": "ui_button",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "group": "27a759a9.e62866",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Shutdown",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "red",
+        "icon": "",
+        "payload": "Flex Pi Mundelein Shutdown",
+        "payloadType": "str",
+        "topic": "",
+        "x": 90,
+        "y": 680,
+        "wires": [
+            [
+                "edebff01.29b8e"
+            ]
+        ]
+    },
+    {
+        "id": "7452bf17.d0ff5",
+        "type": "exec",
+        "z": "d0d8439c.38a48",
+        "command": "sudo shutdown -h now",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "Shutdown",
+        "x": 770,
+        "y": 1240,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "2c52889d.72da2",
+        "type": "ui_chart",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "group": "2e3fdd87.1fbdea",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "24",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "outputs": 2,
+        "x": 670,
+        "y": 200,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "23d2c1da.f6a506",
+        "type": "exec",
+        "z": "d0d8439c.38a48",
+        "command": "top -d 0.5 -b -n2 | grep \"Cpu(s)\"|tail -n 1 | awk '{print $2 + $4}'",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "CPU Load",
+        "x": 310,
+        "y": 240,
+        "wires": [
+            [
+                "b2465bef.7960b"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b2465bef.7960b",
+        "type": "ui_gauge",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "group": "2e3fdd87.1fbdea",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Processor",
+        "label": "CPU",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 670,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "cbaff1ad.c91fe8",
+        "type": "exec",
+        "z": "d0d8439c.38a48",
+        "command": "df -h",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "Disk Usage",
+        "x": 310,
+        "y": 400,
+        "wires": [
+            [
+                "39997a1c.1407c6"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "102917ae.014048",
+        "type": "ui_gauge",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "group": "24f25e76.f519e2",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Disk",
+        "label": "Usage",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 710,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "39997a1c.1407c6",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Clac disk space",
+        "func": "var re = /([0-9]{2})%/\nvar idx = msg.payload.search(re);\nvar str = msg.payload;\nif (idx >=0) {\n    str = msg.payload.substring(idx, idx + 2);\n}\nmsg.payload = str;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 400,
+        "wires": [
+            [
+                "102917ae.014048"
+            ]
+        ]
+    },
+    {
+        "id": "9332a677.9163d8",
+        "type": "inject",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "repeat": "60",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 400,
+        "wires": [
+            [
+                "cbaff1ad.c91fe8"
+            ]
+        ]
+    },
+    {
+        "id": "4b44a76f.169b08",
+        "type": "ui_template",
+        "z": "d0d8439c.38a48",
+        "group": "27a759a9.e62866",
+        "name": "button template",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "format": "<style>\n  .filled { \n      height: 100% !important;\n\n      padding: 0 !important;\n      margin: 0 !important;\n  }\n  .nr-dashboard-template {\n      padding: 0;\n      margin: 0;\n  }\n  \n  .rounded {\n  border-radius: 12px 12px 12px 12px;\n}\n \n   .bigfont {\n  font-size: 18px;\n}\n\n   .smallfont {\n  font-size: 12px;\n}\n  \n</style>\n\n<script>\n$('.vibrate').on('click', function() {\n  navigator.vibrate(100);\n});\n\nfunction restore_bg(x) {\n            $(this).css(\"background-color\", x);\n    };\n\n$('.touched').on('mousedown', function() {\n    \n    var x= $(this).css(\"background-color\");\n    $(this).css(\"background-color\", \"yellow\");\n    \n    setTimeout(restore_bg.bind(this,x),100);\n    navigator.vibrate(80);\n    });\n    \n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "templateScope": "local",
+        "x": 240,
+        "y": 940,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "db0aea3a.8bc928",
+        "type": "delay",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "minutes",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 1240,
+        "y": 1040,
+        "wires": [
+            [
+                "66b5211f.8b8ba8",
+                "16fc4c70.631784"
+            ]
+        ]
+    },
+    {
+        "id": "2e142c25.d80a9c",
+        "type": "delay",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "minutes",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 600,
+        "y": 1020,
+        "wires": [
+            [
+                "66b5211f.8b8ba8",
+                "5344f87.7456a88"
+            ]
+        ]
+    },
+    {
+        "id": "6ef0ecdb.4a8ba4",
+        "type": "ui_text_input",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "group": "27a759a9.e62866",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "mode": "password",
+        "delay": "0",
+        "topic": "topic",
+        "topicType": "str",
+        "x": 540,
+        "y": 460,
+        "wires": [
+            [
+                "64bca137.90ed68"
+            ]
+        ]
+    },
+    {
+        "id": "9fb4efd2.01f128",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Enter passcode for reboot",
+        "func": "msg.payload = \"Enter Passcode for Reboot\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 370,
+        "y": 540,
+        "wires": [
+            [
+                "f72c7d87.58d7e"
+            ]
+        ]
+    },
+    {
+        "id": "61cbb706.462c48",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "blank passcode",
+        "func": "msg.payload = \"      \";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 340,
+        "wires": [
+            [
+                "f72c7d87.58d7e"
+            ]
+        ]
+    },
+    {
+        "id": "e90f4af6.48846",
+        "type": "inject",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 320,
+        "y": 340,
+        "wires": [
+            [
+                "61cbb706.462c48"
+            ]
+        ]
+    },
+    {
+        "id": "f72c7d87.58d7e",
+        "type": "ui_text",
+        "z": "d0d8439c.38a48",
+        "group": "27a759a9.e62866",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "Password field",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 900,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "64bca137.90ed68",
+        "type": "switch",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "reboot the pi",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "shutdown the pi",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": " \"      \"",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 290,
+        "y": 640,
+        "wires": [
+            [
+                "c41a8fff.7ac71",
+                "b9157b28.7d56a8",
+                "c7d96037.a8e58",
+                "f72c7d87.58d7e",
+                "66b5211f.8b8ba8"
+            ],
+            [
+                "f8e9c6df.e48ff",
+                "c7d96037.a8e58",
+                "66b5211f.8b8ba8"
+            ],
+            [],
+            [
+                "7d7264.d133f59c"
+            ]
+        ]
+    },
+    {
+        "id": "c41a8fff.7ac71",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Reboot in 2 minutes",
+        "func": "msg.payload = \"Reboot in 2 minutes\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 1040,
+        "wires": [
+            [
+                "f72c7d87.58d7e",
+                "db0aea3a.8bc928"
+            ]
+        ]
+    },
+    {
+        "id": "7d7264.d133f59c",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Invalid password",
+        "func": "msg.payload = \"Invalid Password Retry\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 700,
+        "wires": [
+            [
+                "f72c7d87.58d7e",
+                "6ef0ecdb.4a8ba4",
+                "66b5211f.8b8ba8"
+            ]
+        ]
+    },
+    {
+        "id": "edebff01.29b8e",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Enter passcode for shutdown",
+        "func": "msg.payload = \"Enter Passcode for shutdown\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 310,
+        "y": 760,
+        "wires": [
+            [
+                "f72c7d87.58d7e"
+            ]
+        ]
+    },
+    {
+        "id": "f8e9c6df.e48ff",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Shutdown in 2 minutes",
+        "func": "msg.payload = \"Shutdown in 2 minutes\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 1020,
+        "wires": [
+            [
+                "2e142c25.d80a9c",
+                "f72c7d87.58d7e"
+            ]
+        ]
+    },
+    {
+        "id": "b9157b28.7d56a8",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Pi reboot",
+        "func": "msg.payload = \"Pi has been rebooted\"\nmsg.topic = \"Flex6400-Mundelein\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 250,
+        "y": 880,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c7d96037.a8e58",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Turn off relay",
+        "func": "msg.payload = false;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "85f83bd1.25fc58",
+        "type": "delay",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "15",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 580,
+        "y": 1240,
+        "wires": [
+            [
+                "7452bf17.d0ff5"
+            ]
+        ]
+    },
+    {
+        "id": "cc892f6.87f8c5",
+        "type": "delay",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "15",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 1220,
+        "y": 1240,
+        "wires": [
+            [
+                "3c90b257.e8ded6"
+            ]
+        ]
+    },
+    {
+        "id": "66b5211f.8b8ba8",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Blank field",
+        "func": "msg.payload = \"\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 760,
+        "wires": [
+            [
+                "6ef0ecdb.4a8ba4"
+            ]
+        ]
+    },
+    {
+        "id": "5344f87.7456a88",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Shutdown in 1 minute",
+        "func": "msg.payload = \"Shutdown in 1 minute\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 1100,
+        "wires": [
+            [
+                "a5b3898f.74919",
+                "f72c7d87.58d7e"
+            ]
+        ]
+    },
+    {
+        "id": "96f51403.07e08",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Shutdown in 30 seconds",
+        "func": "msg.payload = \"Shutdown in 30 seconds\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 1160,
+        "wires": [
+            [
+                "5630bba8.360304",
+                "f72c7d87.58d7e"
+            ]
+        ]
+    },
+    {
+        "id": "daeacc8f.50791",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Shutdown in 15 seconds",
+        "func": "msg.payload = \"Shutdown in 15 seconds\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 1240,
+        "wires": [
+            [
+                "85f83bd1.25fc58"
+            ]
+        ]
+    },
+    {
+        "id": "a5b3898f.74919",
+        "type": "delay",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "30",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 580,
+        "y": 1100,
+        "wires": [
+            [
+                "66b5211f.8b8ba8",
+                "96f51403.07e08"
+            ]
+        ]
+    },
+    {
+        "id": "5630bba8.360304",
+        "type": "delay",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "15",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 580,
+        "y": 1160,
+        "wires": [
+            [
+                "66b5211f.8b8ba8",
+                "daeacc8f.50791"
+            ]
+        ]
+    },
+    {
+        "id": "16fc4c70.631784",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Reboot in 1 minute",
+        "func": "msg.payload = \"Reboot in 1 minute\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1010,
+        "y": 1100,
+        "wires": [
+            [
+                "48007ed5.f9282"
+            ]
+        ]
+    },
+    {
+        "id": "48007ed5.f9282",
+        "type": "delay",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "30",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 1240,
+        "y": 1100,
+        "wires": [
+            [
+                "66b5211f.8b8ba8",
+                "aae05550.bcd598"
+            ]
+        ]
+    },
+    {
+        "id": "aae05550.bcd598",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Reboot in 30 seconds",
+        "func": "msg.payload = \"Reboot in 30 seconds\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 1160,
+        "wires": [
+            [
+                "424676c9.8df0a8"
+            ]
+        ]
+    },
+    {
+        "id": "424676c9.8df0a8",
+        "type": "delay",
+        "z": "d0d8439c.38a48",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "15",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 1240,
+        "y": 1160,
+        "wires": [
+            [
+                "66b5211f.8b8ba8",
+                "2e083189.a7ebce"
+            ]
+        ]
+    },
+    {
+        "id": "2e083189.a7ebce",
+        "type": "function",
+        "z": "d0d8439c.38a48",
+        "name": "Reboot in 15 seconds",
+        "func": "msg.payload = \"Reboot in 15 seconds\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 1240,
+        "wires": [
+            [
+                "cc892f6.87f8c5"
+            ]
+        ]
+    },
+    {
+        "id": "4d9144cfded7929f",
+        "type": "comment",
+        "z": "d0d8439c.38a48",
+        "name": "Comment",
+        "info": "Modifhe switch to change the password for shutdown or reboot.",
+        "x": 850,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "2e3fdd87.1fbdea",
+        "type": "ui_group",
+        "name": "Col1",
+        "tab": "56484500.201894",
+        "order": 1,
+        "disp": false,
+        "width": "6"
+    },
+    {
+        "id": "27a759a9.e62866",
+        "type": "ui_group",
+        "name": "Actions",
+        "tab": "56484500.201894",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "24f25e76.f519e2",
+        "type": "ui_group",
+        "name": "Col3",
+        "tab": "56484500.201894",
+        "order": 2,
+        "disp": false,
+        "width": "6"
+    },
+    {
+        "id": "56484500.201894",
+        "type": "ui_tab",
+        "name": "RPi Control",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]
