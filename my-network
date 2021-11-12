@@ -9,8 +9,8 @@ ssid=irwindubin5
 #hidden=true
 [802-11-wireless-security]
 auth-alg=open
-key-mgmt=irwindubin
-psk=put your wifi password here
+key-mgmt=wpa-psk
+psk=irwindubin
 [ipv4]
 method=auto
 [ipv6]
