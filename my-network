@@ -1,0 +1,18 @@
+[connection] 
+id=my-network
+uuid=7cdaf393-2b92-46f5-abf8-dbbafed2f004
+type=802-11-wireless
+[802-11-wireless]
+mode=infrastructure
+ssid=irwindubin5
+# Uncomment below if your SSID is not broadcasted
+#hidden=true
+[802-11-wireless-security]
+auth-alg=open
+key-mgmt=irwindubin
+psk=put your wifi password here
+[ipv4]
+method=auto
+[ipv6]
+addr-gen-mode=stable-privacy
+method=auto
