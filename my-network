@@ -4,13 +4,13 @@ uuid=7cdaf393-2b92-46f5-abf8-dbbafed2f004
 type=802-11-wireless
 [802-11-wireless]
 mode=infrastructure
-ssid=irwindubin5
+ssid=Your SSID goes here
 # Uncomment below if your SSID is not broadcasted
 #hidden=true
 [802-11-wireless-security]
 auth-alg=open
 key-mgmt=wpa-psk
-psk=irwindubin
+psk=Your Wi-Fi password goes here
 [ipv4]
 method=auto
 [ipv6]
