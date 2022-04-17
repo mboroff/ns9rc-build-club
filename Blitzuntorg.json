@@ -1,0 +1,135 @@
+[
+    {
+        "id": "07aa18e05459f621",
+        "type": "tab",
+        "label": "Blitzuntorg",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "bea4993f.85f4d8",
+        "type": "websocket-client",
+        "path": "wss://ws7.blitzortung.org/",
+        "tls": "621bc3fe.d747dc",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": ""
+    },
+    {
+        "id": "621bc3fe.d747dc",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false
+    },
+    {
+        "id": "e8923d3119f9de10",
+        "type": "websocket in",
+        "z": "07aa18e05459f621",
+        "name": "",
+        "server": "",
+        "client": "bea4993f.85f4d8",
+        "x": 790,
+        "y": 380,
+        "wires": [
+            [
+                "bb38d5607155fdac"
+            ]
+        ]
+    },
+    {
+        "id": "2570533c0ddd961a",
+        "type": "websocket out",
+        "z": "07aa18e05459f621",
+        "name": "",
+        "server": "",
+        "client": "bea4993f.85f4d8",
+        "x": 800,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "6c3aabd78a8dbe6b",
+        "type": "inject",
+        "z": "07aa18e05459f621",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "30",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "{\"a\":542}",
+        "payloadType": "str",
+        "x": 830,
+        "y": 240,
+        "wires": [
+            [
+                "2570533c0ddd961a"
+            ]
+        ]
+    },
+    {
+        "id": "64ce0bfa9e1942bb",
+        "type": "function",
+        "z": "07aa18e05459f621",
+        "name": "",
+        "func": "function arePointsNear(checkPoint, centerPoint) {\n var ky = 40000 / 360;\n var kx = Math.cos(Math.PI * centerPoint.lat / 180.0) * ky;\n var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;\n var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;\n return Math.sqrt(dx * dx + dy * dy);\n}\n\nvar strike = { lat: msg.payload.lat, lng: msg.payload.lon };\n\n// set latitute + longitude accordingly\nvar home = { lat: 22.222222, lng: 11.111111 };\n\nvar n = arePointsNear(strike, home);\n\n// '10' = km radius, replace with whatever km radius you'd like\nif(n <= 10) {\n // return distance to strike if strike is in defined radius\n return {payload: n};\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e0a0fa6ae9f41024",
+        "type": "json",
+        "z": "07aa18e05459f621",
+        "name": "convert JSON",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 870,
+        "y": 500,
+        "wires": [
+            [
+                "64ce0bfa9e1942bb"
+            ]
+        ]
+    },
+    {
+        "id": "bb38d5607155fdac",
+        "type": "function",
+        "z": "07aa18e05459f621",
+        "name": "",
+        "func": "function decode(b) {\n var a, e = {},\n d = b.split(\"\"),\n c = d[0],\n f = c,\n g = [c],\n h = 256;\n o = h;\n for (b = 1; b < d.length; b++) a = d[b].charCodeAt(0), a = h > a ? d[b] : e[a] ? e[a] : f + c, g.push(a), c = a.charAt(0), e[o] = f + c, o++, f = a;\n return g.join(\"\")\n}\n\nreturn {\n payload: decode(msg.payload)\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 440,
+        "wires": [
+            [
+                "e0a0fa6ae9f41024"
+            ]
+        ]
+    }
+]
